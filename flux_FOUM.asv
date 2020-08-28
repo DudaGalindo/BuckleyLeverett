@@ -1,0 +1,36 @@
+function [dfwdSw, dSw_vols] = flux_FOUM(M, fw, Sw)
+    fw_face_neig = fw(M.faces_conec);
+    Sw_face_neig = Sw(M.faces_conec);
+    
+    fw_face = zeros(length(fw_face_neig(:,1)),1);
+    fw_face(fw_face_neig(:,2)>=fw_face_neig(:,1)) = fw_face_neig(fw_face_neig(:,2)>=fw_face_neig(:,1),2);
+    fw_face(fw_face_neig(:,2)<fw_face_neig(:,1)) = fw_face_neig(fw_face_neig(:,2)<fw_face_neig(:,1),1);
+    
+    Sw_face(fw_face_neig(:,2)>=fw_face_neig(:,1)) = Sw_face_neig(fw_face_neig(:,2)>=fw_face_neig(:,1),2);
+    Sw_face(fw_face_neig(:,2)<fw_face_neig(:,1)) = Sw_face_neig(fw_face_neig(:,2)<fw_face_neig(:,1),1);
+    
+    dfw_vols = zeros(1,M.n_el);
+    dSw_vols = zeros(1,M.n_el);
+    conec = M.faces_conec;
+    % da pra melhorar isso - ta pessimo
+    cph = 1;
+    lines = int8(cat(1,repmat(cph,length(conec(:,1)),1), repmat(cph, length(conec(:,2)),1)));
+    cols = int8(cat(2,conec(:,1),conec(:,2)));
+    data = cat(2,-fw_face, fw_face);
+    S = sparse(lines,cols,data);
+    for i=1:M.n_el
+        for p=1:2
+            f=1;
+            if p==2
+                f=-1;
+            end
+         try 
+             dfw_vols(i) = dfw_vols(i) + f*fw_face(conec(:,p)==i);
+             dSw_vols(i) = dSw_vols(i) + f*Sw_face(conec(:,p)==i);
+         catch 
+         end
+        end
+    end
+    dfwdSw = dfw_vols./dSw_vols;
+    dfwdSw(dSw_vols==0)=0;
+end
