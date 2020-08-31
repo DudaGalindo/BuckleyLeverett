@@ -126,7 +126,17 @@ t = t0;
 [Sw1024] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
 
 %% Analytical Solution using Welge's Approach
-[Sw, Xsw, Swf, nts] = Welge_Solution();
+[index, dfw, Sw, Xsw, Swf, nts] = Welge_Solution();
+t = linspace(t0, t_final, nts);
+dfwt = dfw(end:-1:index); % inverted sequence of dfw
+Swt = Sw(end:-1:index); % inverted sequence of Sw
+ti = nts;
+qt = 1.0;
+nsw = size(Sw,1);
+for i = 1:(nsw-index+1)
+    Xsw(i,ti) = qt*t(ti)/(A*phi)*dfwt(i);
+end
+
  %% Plotting Area
  fig1 = figure(1);
  set(fig1, 'color', 'w')

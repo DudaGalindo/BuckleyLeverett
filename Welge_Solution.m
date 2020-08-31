@@ -1,7 +1,7 @@
 %% Problem description
 % Analytical solution of Buckley–Leverett equation using Welge method
 % Brooks–Corey type relative permeability curves are used
-function [Sw, Xsw, Swf, nts] = Welge_Solution()
+function [index, dfw, Sw, Xsw, Swf, nts] = Welge_Solution()
 %% 1 Parameters initialization
 % 1.1 rock properties
 L = 1.0; % domain length [m]
