@@ -1,4 +1,4 @@
-function [dfwdSw, dSw_vols] = flux_FOUM(M, fw, Sw)
+function [dfwdSw, dfw_vols] = flux_FOUM(M, fw, Sw)
     fw_face_neig = fw(M.faces_conec);
     Sw_face_neig = Sw(M.faces_conec);
     

@@ -20,6 +20,7 @@ t_final = .5; % final calculation time [s]
 
 %% Run Test - mesh with 8 elements
 
+solver = 'FOUM';
 M = Mesh;
 M.n_el = 8;
 M.L = L;
@@ -28,13 +29,12 @@ Sw(1) = 1-Sor;
 Sw(end) = Swc;
 x8 = linspace(0,L,8);
 t = t0;
-solver = 'FOUM';
+
 [Sw8] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
-solver = 'MUSCL';
-[Sw8_MUSCL] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
 
 %% Run Test - mesh with 16 elements
  
+solver = 'FOUM';
 M = Mesh;
 M.n_el = 16;
 M.L = L;
@@ -43,14 +43,12 @@ Sw(1) = 1-Sor;
 Sw(end) = Swc;
 x16 = linspace(0,L,16);
 t = t0;
-solver = 'FOUM';
 [Sw16] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
-solver = 'MUSCL';
-[Sw16_MUSCL] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
 
  
 %% Run Test - mesh with 32 elements
  
+solver = 'FOUM';
 M = Mesh;
 M.n_el = 32;
 M.L = L;
@@ -59,13 +57,11 @@ Sw(1) = 1-Sor;
 Sw(end) = Swc;
 x32 = linspace(0,L,32);
 t = t0;
-solver = 'FOUM';
 [Sw32] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
-solver = 'MUSCL';
-[Sw32_MUSCL] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
  
 %% Run Test - mesh with 64 elements
  
+solver = 'FOUM';
 M = Mesh;
 M.n_el =64;
 M.L = L;
@@ -74,13 +70,9 @@ Sw(1) = 1-Sor;
 Sw(end) = Swc;
 x64 = linspace(0,L,64);
 t = t0;
-solver = 'FOUM';
 [Sw64] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
-solver = 'MUSCL';
-[Sw64_MUSCL] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
 
 %% Run Test - mesh with 128 elements
-
 M = Mesh;
 M.n_el =128;
 M.L = L;
@@ -170,32 +162,6 @@ end
  plot(x256, Sw256, 'Color', [0.4 0.15 0.2])
  plot(x512, Sw512, 'Color', [0.02 0.8 0.2])
  plot(x1024, Sw1024, 'Color', [0.67 0.6 0.07])
- hold on
- plot(Xsw(:,nts), Swt, '-r', 'LineWidth', 2.0);
- hold on
- plot([0 Xsw(1,nts)], [1-Sor 1-Sor], '-r', 'LineWidth', 2.0);
- plot([Xsw(end,nts) Xsw(end,nts)], [Swf Swc], '-r', 'LineWidth', 2.0);
-        plot([Xsw(end,nts) L], [Swc Swc], '-r', 'LineWidth', 2.0);
- legend('8 elements', '16 elements', '32 elements', '64 elements', ...
-     '128 elements', '256 elements', '512 elements', '1024 elements', ...
-     'Welge Analytical Solution')
- grid minor
-
-fig2 = figure(2);
- set(fig2, 'color', 'w')
- hold on
- title('Water Saturation Profile - MUSCL')
- xlabel('Distance')
- ylabel('Water Saturation')
- plot(x8,Sw8_MUSCL,'r')
- hold on
- plot(x16, Sw16_MUSCL, 'k')
- plot(x32, Sw32_MUSCL, 'b')
- plot(x64, Sw64_MUSCL, 'm')
- plot(x128, Sw128_MUSCL, 'Color', [0.01 0.012 0.782])
- plot(x256, Sw256_MUSCL, 'Color', [0.4 0.15 0.2])
- plot(x512, Sw512_MUSCL, 'Color', [0.02 0.8 0.2])
- plot(x1024, Sw1024_MUSCL, 'Color', [0.67 0.6 0.07])
  hold on
  plot(Xsw(:,nts), Swt, '-r', 'LineWidth', 2.0);
  hold on
