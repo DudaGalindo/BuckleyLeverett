@@ -5,9 +5,11 @@ function [dfwdSw, dfw_vols] = flux_FOUM(M, fw, Sw)
     fw_face = zeros(length(fw_face_neig(:,1)),1);
     fw_face(fw_face_neig(:,2)>=fw_face_neig(:,1)) = fw_face_neig(fw_face_neig(:,2)>=fw_face_neig(:,1),2);
     fw_face(fw_face_neig(:,2)<fw_face_neig(:,1)) = fw_face_neig(fw_face_neig(:,2)<fw_face_neig(:,1),1);
-    
     Sw_face(fw_face_neig(:,2)>=fw_face_neig(:,1)) = Sw_face_neig(fw_face_neig(:,2)>=fw_face_neig(:,1),2);
     Sw_face(fw_face_neig(:,2)<fw_face_neig(:,1)) = Sw_face_neig(fw_face_neig(:,2)<fw_face_neig(:,1),1);
+    
+    %fw_face = fw_face_neig(:,1);
+    %Sw_face = Sw_face_neig(:,1);
     
     conec = M.faces_conec;
     
@@ -23,7 +25,7 @@ function [dfwdSw, dfw_vols] = flux_FOUM(M, fw, Sw)
     
     lines = cat(1,repmat(cph,length(conec(:,1)),1), repmat(cph, length(conec(:,2)),1));
     cols = cat(1,conec(:,1),conec(:,2));
-    data = cat(1,-Sw_face, Sw_face);
+    data = cat(1,Sw_face, -Sw_face);
     dSw_vols = sparse(lines,cols,data);
     
     dfwdSw = dfw_vols./dSw_vols;

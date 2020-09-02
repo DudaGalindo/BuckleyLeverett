@@ -11,9 +11,9 @@ function [Sw] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_fin
              [dfw_dSw, dfw_vols] = flux_MUSCL(M, Sw, mi_w, mi_o, Sor, Swc, n_o, n_w);
         end
         dt = Update_Time(M, dfw_dSw, v, t, t_final,solver);
-        %vols_internal = setdiff(M.all_vols_ID, M.contour_vols_ID);
+        vols_internal = setdiff(M.all_vols_ID, M.contour_vols_ID);
         dx = M.L/M.n_el;
-        Sw(2:end) = Sw(2:end) + dt * v/phi * dfw_vols(2:end)/dx;
+        Sw(vols_internal) = Sw(vols_internal) + dt * v/phi * dfw_vols(vols_internal)/dx;
         t = t + dt;
         if any(find(Sw>1))
             break

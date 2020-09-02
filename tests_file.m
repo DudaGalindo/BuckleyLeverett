@@ -8,15 +8,15 @@ mi_o = 1.0e-3; % oil phase viscosity [Pa*s]
 mi_w = 1.0e-3; % water phase viscosity [Pa*s]
 
 % 1.3 relative permeability parameters
-Sor = 0.0; % residual oil saturation
-Swc = 0.0; % connate water saturation
+Sor = 0.1; % residual oil saturation
+Swc = 0.1; % connate water saturation
 n_o = 2.00; % exponent of oil phase
 n_w = 2.00; % exponent of water phase
 
 % 1.4 other initial parameters
 
 t0 = 0.; % initial calculation time [s]
-t_final = .5; % final calculation time [s]
+t_final = .2; % final calculation time [s]
 
 %% Run Test - mesh with 8 elements
 
@@ -206,6 +206,24 @@ fig2 = figure(2);
      '128 elements', '256 elements', '512 elements', '1024 elements', ...
      'Welge Analytical Solution')
  grid minor
+ 
+ figure(3)
+ set(fig2, 'color', 'w')
+ hold on
+ title('Water Saturation Profile')
+ xlabel('Distance')
+ ylabel('Water Saturation')
+ hold on
+ plot(x256, Sw256, 'Color', [.5 0.7 0.2])
+ plot(x256, Sw256_MUSCL, 'Color', [0.4 0.15 0.2])
+ hold on
+ plot(Xsw(:,nts), Swt, '-r', 'LineWidth', 2.0);
+ hold on
+ plot([0 Xsw(1,nts)], [1-Sor 1-Sor], '-r', 'LineWidth', 2.0);
+ plot([Xsw(end,nts) Xsw(end,nts)], [Swf Swc], '-r', 'LineWidth', 2.0);
+        plot([Xsw(end,nts) L], [Swc Swc], '-r', 'LineWidth', 2.0);
+ legend('256 elements - UPW','256 elements - MUSCL',  ...
+     'Welge Analytical Solution')
 
 % 5.4 Plot the water saturation profiles
 %{

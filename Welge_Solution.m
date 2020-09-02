@@ -12,13 +12,13 @@ theta = pi*0.0; % angle: x-direction vs horizontal[rad]
 % 1.2 fluid properties
 muo = 1.0e-3; % oil phase viscosity [Pa*s]
 muw = 1.0e-3; % water phase viscosity [Pa*s]
-rho_o = 0.8e3; % oil density [kg/m^3]
+rho_o = 1.e3; % oil density [kg/m^3]
 rho_w = 1.0e3; % water density [kg/m^3]
 dlt_rho = rho_w-rho_o; % density difference [kg/m^3]
 
 % 1.3 relative permeability parameters
-Sor = 0.0; % residual oil saturation
-Swc = 0.0; % connate water saturation
+Sor = 0.1; % residual oil saturation
+Swc = 0.1; % connate water saturation
 no = 2.00; % exponent of oil phase
 nw = 2.00; % exponent of water phase
 kro_max = 1.; % maximum permeability of oil phase
@@ -30,7 +30,7 @@ Sw = ((Swc+eps):dlt_Sw:(1-Sor))'; % water saturation vector
 qt = 1.0; % constant water injection rate [m^3/s]
 g = 9.8067; % gravity acceleration constant [m/s^2]
 time0 = 0; % initial calculation time [s]
-timef = 0.5; % final calculation time [s]
+timef = 0.2; % final calculation time [s]
 nts = 4; % time steps for calculating
 nsw = size(Sw,1); % number of water saturation vector
 format = '%4.2e'; % precision format for plotting legend
