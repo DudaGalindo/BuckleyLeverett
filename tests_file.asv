@@ -30,8 +30,10 @@ x8 = linspace(0,L,8);
 t = t0;
 solver = 'FOUM';
 [Sw8] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
-solver = 'MUSCL';
-[Sw8_MUSCL] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'LLF';
+[Sw8_MUSCL_LLF] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'Roe';
+[Sw8_MUSCL_Roe] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
 
 %% Run Test - mesh with 16 elements
  
@@ -45,8 +47,10 @@ x16 = linspace(0,L,16);
 t = t0;
 solver = 'FOUM';
 [Sw16] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
-solver = 'MUSCL';
-[Sw16_MUSCL] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'LLF';
+[Sw16_MUSCL_LLF] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'Roe';
+[Sw16_MUSCL_Roe] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
 
  
 %% Run Test - mesh with 32 elements
@@ -61,8 +65,10 @@ x32 = linspace(0,L,32);
 t = t0;
 solver = 'FOUM';
 [Sw32] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
-solver = 'MUSCL';
-[Sw32_MUSCL] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'LLF';
+[Sw32_MUSCL_LLF] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'Roe';
+[Sw32_MUSCL_Roe] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
  
 %% Run Test - mesh with 64 elements
  
@@ -76,8 +82,10 @@ x64 = linspace(0,L,64);
 t = t0;
 solver = 'FOUM';
 [Sw64] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
-solver = 'MUSCL';
-[Sw64_MUSCL] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'LLF';
+[Sw64_MUSCL_LLF] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'Roe';
+[Sw64_MUSCL_Roe] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
 
 %% Run Test - mesh with 128 elements
 
@@ -91,8 +99,10 @@ x128 = linspace(0,L,128);
 t=t0;
 solver = 'FOUM';
 [Sw128] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
-solver = 'MUSCL';
-[Sw128_MUSCL] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'LLF';
+[Sw128_MUSCL_LLF] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'Roo';
+[Sw128_MUSCL_Roe] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
 
 %% Run Test - mesh with 256 elements
 
@@ -106,8 +116,10 @@ x256 = linspace(0,L,256);
 t = t0;
 solver = 'FOUM';
 [Sw256] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
-solver = 'MUSCL';
-[Sw256_MUSCL] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'LLF';
+[Sw256_MUSCL_LLF] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'Roe';
+[Sw256_MUSCL_Roe] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
 
 %% Run Test - mesh with 512 elements
  
@@ -122,8 +134,10 @@ x512 = linspace(0,L,512);
 t = t0;
 solver = 'FOUM';
 [Sw512] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
-solver = 'MUSCL';
-[Sw512_MUSCL] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'LLF';
+[Sw512_MUSCL_LLF] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'Roe';
+[Sw512_MUSCL_Roe] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
 
 
 %% Run Test - mesh with 1024 elements
@@ -139,8 +153,10 @@ x1024 = linspace(0,L,1024);
 t = t0;
 solver = 'FOUM';
 [Sw1024] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
-solver = 'MUSCL';
-[Sw1024_MUSCL] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'LLF';
+[Sw1024_MUSCL_LLF] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
+solver = 'Roe';
+[Sw1024_MUSCL_Roe] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
 
 %% Analytical Solution using Welge's Approach
 [index, dfw, Sw, Xsw, Swf, nts] = Welge_Solution();
@@ -187,15 +203,15 @@ fig2 = figure(2);
  title('Water Saturation Profile - MUSCL')
  xlabel('Distance')
  ylabel('Water Saturation')
- plot(x8,Sw8_MUSCL,'r')
+ plot(x8,Sw8_MUSCL_LLF,'r')
  hold on
- plot(x16, Sw16_MUSCL, 'k')
- plot(x32, Sw32_MUSCL, 'b')
- plot(x64, Sw64_MUSCL, 'm')
- plot(x128, Sw128_MUSCL, 'Color', [0.01 0.012 0.782])
- plot(x256, Sw256_MUSCL, 'Color', [0.4 0.15 0.2])
- plot(x512, Sw512_MUSCL, 'Color', [0.02 0.8 0.2])
- plot(x1024, Sw1024_MUSCL, 'Color', [0.67 0.6 0.07])
+ plot(x16, Sw16_MUSCL_LLF, 'k')
+ plot(x32, Sw32_MUSCL_LLF, 'b')
+ plot(x64, Sw64_MUSCL_LLF, 'm')
+ plot(x128, Sw128_MUSCL_LLF, 'Color', [0.01 0.012 0.782])
+ plot(x256, Sw256_MUSCL_LLF, 'Color', [0.4 0.15 0.2])
+ plot(x512, Sw512_MUSCL_LLF, 'Color', [0.02 0.8 0.2])
+ plot(x1024, Sw1024_MUSCL_LLF, 'Color', [0.67 0.6 0.07])
  hold on
  plot(Xsw(:,nts), Swt, '-r', 'LineWidth', 2.0);
  hold on
@@ -207,17 +223,41 @@ fig2 = figure(2);
      'Welge Analytical Solution')
  grid minor
  
- figure(3)
+ fig3 = figure(3);
+ set(fig3, 'color', 'w')
+ hold on
+ title('Water Saturation Profile - MUSCL')
+ xlabel('Distance')
+ ylabel('Water Saturation')
+ plot(x8,Sw8_MUSCL_Roe,'r')
+ hold on
+ plot(x16, Sw16_MUSCL_Roe, 'k')
+ plot(x32, Sw32_MUSCL_LLF, 'b')
+ plot(x64, Sw64_MUSCL_LLF, 'm')
+ plot(x128, Sw128_MUSCL_LLF, 'Color', [0.01 0.012 0.782])
+ plot(x256, Sw256_MUSCL_LLF, 'Color', [0.4 0.15 0.2])
+ plot(x512, Sw512_MUSCL_LLF, 'Color', [0.02 0.8 0.2])
+ plot(x1024, Sw1024_MUSCL_LLF, 'Color', [0.67 0.6 0.07])
+ hold on
+ plot(Xsw(:,nts), Swt, '-r', 'LineWidth', 2.0);
+ hold on
+ plot([0 Xsw(1,nts)], [1-Sor 1-Sor], '-r', 'LineWidth', 2.0);
+ plot([Xsw(end,nts) Xsw(end,nts)], [Swf Swc], '-r', 'LineWidth', 2.0);
+        plot([Xsw(end,nts) L], [Swc Swc], '-r', 'LineWidth', 2.0);
+ legend('8 elements', '16 elements', '32 elements', '64 elements', ...
+     '128 elements', '256 elements', '512 elements', '1024 elements', ...
+     'Welge Analytical Solution')
+ grid minor
+ 
+ figure(4)
  set(fig2, 'color', 'w')
  hold on
  title('Water Saturation Profile')
  xlabel('Distance')
  ylabel('Water Saturation')
  hold on
- plot(x256, Sw256, 'Color', [5 0.7 0.2])
- plot(x256, Sw256_MUSCL, 'Color', [0.4 0.15 0.2])
- plot(x512, Sw512_MUSCL, 'Color', [0.02 0.8 0.2])
- plot(x1024, Sw1024_MUSCL, 'Color', [0.67 0.6 0.07])
+ plot(x256, Sw256, 'Color', [.5 0.7 0.2])
+ plot(x256, Sw256_MUSCL_LLF, 'Color', [0.4 0.15 0.2])
  hold on
  plot(Xsw(:,nts), Swt, '-r', 'LineWidth', 2.0);
  hold on

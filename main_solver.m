@@ -8,7 +8,7 @@ function [Sw] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_fin
         if strcmp(solver,'FOUM')
             [dfw_dSw, dfw_vols] = flux_FOUM(M, fw, Sw);
         else
-             [dfw_dSw, dfw_vols] = flux_MUSCL(M, Sw, mi_w, mi_o, Sor, Swc, n_o, n_w);
+             [dfw_dSw, dfw_vols] = flux_MUSCL(M, Sw, mi_w, mi_o, Sor, Swc, n_o, n_w, solver);
         end
         dt = Update_Time(M, dfw_dSw, v, t, t_final,solver);
         %vols_internal = setdiff(M.all_vols_ID, M.contour_vols_ID);

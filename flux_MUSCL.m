@@ -1,4 +1,4 @@
-function [dfwdSw, dfw_vols] = flux_MUSCL(M, Sw, mi_w, mi_o, Sor, Swc, n_o, n_w)
+function [dfwdSw, dfw_vols] = flux_MUSCL(M, Sw, mi_w, mi_o, Sor, Swc, n_o, n_w, solver)
 %% Obtenção dos gradientes 
 conec = M.faces_conec;
 dSw_face = Sw(conec(:,2)) -Sw(conec(:,1));
@@ -18,10 +18,10 @@ r(dSw_face_neig==0)=0;
 
 
 %% Cálculo da função limitadora (usando aqui Van Leer):
-%phi = (r + abs(r))./(r + 1);
-%phi(:,2) = -phi(:,2);
-phi = (r.^2 + r)./(r.^2 + 1);
+phi = (r + abs(r))./(r + 1);
 phi(:,2) = -phi(:,2);
+%phi = (r.^2 + r)./(r.^2 + 1);
+%phi(:,2) = -phi(:,2);
 phi(r==-1)=0;
 
 %% Extrapolação da função à esquerda e à direita da face:
@@ -59,7 +59,7 @@ for i=1:2
     fw_face_minus = lamb_w_face_minus./(lamb_o_face_minus + lamb_w_face_minus);
     dfw_dSw_face(:,i) = (fw_face_plus - fw_face_minus)./(Sw_face_plus - Sw_face_minus);    
 end
-Swm_face_plus = Swm_face;
+
 Swm_face_minus = Swm_face;
 Swm_face_plus = Swm_face;
 Swm_face_plus = Swm_face_plus + delta/2;
@@ -78,10 +78,18 @@ fwm_face_minus = lambm_w_face_minus./(lambm_o_face_minus + lambm_w_face_minus);
 dfw_dSw_face(:,3) = (fwm_face_plus - fwm_face_minus)./(Swm_face_plus - Swm_face_minus);
 
 alpha = max(abs(dfw_dSw_face),[],2);
-%alpha_HG = (fw_face(:,2) - fw_face(:,1))./(Sw_face(:,2) - Sw_face(:,1));
+alpha_HG = (fw_face(:,2) - fw_face(:,1))./(Sw_face(:,2) - Sw_face(:,1));
+alpha_HG((Sw_face(:,2) - Sw_face(:,1)==0)) = 0;
 %alpha_HG(abs(Sw_face(:,2) - Sw_face(:,1))<1e-2)=max(abs(dfw_dSw_face(abs(Sw_face(:,2) - Sw_face(:,1))<1e-2)),[],2);
 %% Cálculo do Fluxo por LLF:
-fw_face = 1/2*(sum(fw_face,2) - alpha.*(Sw_face(:,2) - Sw_face(:,1)));
+if strcmp(solver, 'LLF')
+    fw_face = 1/2*(sum(fw_face,2) - alpha.*(Sw_face(:,2) - Sw_face(:,1)));
+end
+if strcmp(solver, 'Roe')
+    A = abs(alpha_HG);
+    fw_face = 1/2*(sum(fw_face,2) - A.*(Sw_face(:,2) - Sw_face(:,1)));
+end
+%% Cálculo do Fluxo por Roe:
 
 cph = 1;
 lines = cat(1,repmat(cph,length(conec(:,1)),1), repmat(cph, length(conec(:,2)),1));
