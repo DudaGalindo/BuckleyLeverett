@@ -1,3 +1,6 @@
+%% Arquivo principal para simular todos os casos com todas as malhas.
+% Para gerar os gráficos, deve-se rodar este arquivo.
+
 %% Input data file 
 L = 1.0; % domain length [m]
 A = 1.0; % area of cross-section [m^2]
@@ -101,7 +104,7 @@ solver = 'FOUM';
 [Sw128] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
 solver = 'LLF';
 [Sw128_MUSCL_LLF] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
-solver = 'Roo';
+solver = 'Roe';
 [Sw128_MUSCL_Roe] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
 
 %% Run Test - mesh with 256 elements
@@ -171,6 +174,8 @@ for i = 1:(nsw-index+1)
 end
 
  %% Plotting Area
+ 
+ % Plot results for FOUM only
  fig1 = figure(1);
  set(fig1, 'color', 'w')
  hold on
@@ -197,10 +202,11 @@ end
      'Welge Analytical Solution')
  grid minor
 
+ % Plot results for MUSCL-LLF only
 fig2 = figure(2);
  set(fig2, 'color', 'w')
  hold on
- title('Water Saturation Profile - MUSCL')
+ title('Water Saturation Profile - MUSCL + LLF')
  xlabel('Distance')
  ylabel('Water Saturation')
  plot(x8,Sw8_MUSCL_LLF,'r')
@@ -223,21 +229,22 @@ fig2 = figure(2);
      'Welge Analytical Solution')
  grid minor
  
+ % Plot results for MUSCL-Roe only
  fig3 = figure(3);
  set(fig3, 'color', 'w')
  hold on
- title('Water Saturation Profile - MUSCL')
+ title('Water Saturation Profile - MUSCL + Roe')
  xlabel('Distance')
  ylabel('Water Saturation')
  plot(x8,Sw8_MUSCL_Roe,'r')
  hold on
  plot(x16, Sw16_MUSCL_Roe, 'k')
- plot(x32, Sw32_MUSCL_LLF, 'b')
- plot(x64, Sw64_MUSCL_LLF, 'm')
- plot(x128, Sw128_MUSCL_LLF, 'Color', [0.01 0.012 0.782])
- plot(x256, Sw256_MUSCL_LLF, 'Color', [0.4 0.15 0.2])
- plot(x512, Sw512_MUSCL_LLF, 'Color', [0.02 0.8 0.2])
- plot(x1024, Sw1024_MUSCL_LLF, 'Color', [0.67 0.6 0.07])
+ plot(x32, Sw32_MUSCL_Roe, 'b')
+ plot(x64, Sw64_MUSCL_Roe, 'm')
+ plot(x128, Sw128_MUSCL_Roe, 'Color', [0.01 0.012 0.782])
+ plot(x256, Sw256_MUSCL_Roe, 'Color', [0.4 0.15 0.2])
+ plot(x512, Sw512_MUSCL_Roe, 'Color', [0.02 0.8 0.2])
+ plot(x1024, Sw1024_MUSCL_Roe, 'Color', [0.67 0.6 0.07])
  hold on
  plot(Xsw(:,nts), Swt, '-r', 'LineWidth', 2.0);
  hold on
@@ -249,8 +256,8 @@ fig2 = figure(2);
      'Welge Analytical Solution')
  grid minor
  
- figure(4)
- set(fig2, 'color', 'w')
+ fig4 = figure(4);
+ set(fig4, 'color', 'w')
  hold on
  title('Water Saturation Profile')
  xlabel('Distance')

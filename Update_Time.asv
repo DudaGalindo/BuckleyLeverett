@@ -1,0 +1,14 @@
+%% Função para calcular o passo de tempo
+% OBS: Na prátictilizamos aqui um passo de tempo fixo, vide(CARVALHO,2005), uma vez
+% que
+function [dt] = Update_Time(M, v, t, t_final, type)
+    CFL = 0.05;
+    if strcmp(type,'MUSCL')
+        CFL = 0.05;
+    end
+    dx = M.L/M.n_el;
+    dt = CFL *(abs(dx./(v)));
+    if t + dt > t_final
+        dt = t_final - t;
+    end
+end

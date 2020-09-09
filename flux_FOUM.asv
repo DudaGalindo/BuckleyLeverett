@@ -1,5 +1,5 @@
 %% Função criada para o cálculo do fluxo na face por upwind de primeira ordem
-function [dfw_vols] = flux_FOUM(M, fw, Sw)
+function [dfwdSw, dfw_vols] = flux_FOUM(M, fw, Sw)
     fw_face_neig = fw(M.faces_conec);
     Sw_face_neig = Sw(M.faces_conec);
     
@@ -9,20 +9,34 @@ function [dfw_vols] = flux_FOUM(M, fw, Sw)
     Sw_face(fw_face_neig(:,2)>=fw_face_neig(:,1)) = Sw_face_neig(fw_face_neig(:,2)>=fw_face_neig(:,1),2);
     Sw_face(fw_face_neig(:,2)<fw_face_neig(:,1)) = Sw_face_neig(fw_face_neig(:,2)<fw_face_neig(:,1),1);
     
+    %fw_face = fw_face_neig(:,1);
+    %Sw_face = Sw_face_neig(:,1);
+    
     conec = M.faces_conec;
-
-
+    
+    
+    vols_ind = (1:M.n_el);
+    fw_vols = zeros(M.n_el,1);
+    fw_vols(conec(:,1)) = -fw_face;
+    fw_vols(conec(:,2)) = fw_face;
+    
     % Abaixo é mostrado um artificio usando matriz esparsa pra calcular o
-    % fluxo fracional no volume (dfw_vols) como o balanço do que entra 
-    % menos o que sai pelas faces. 
-    % Esse artificio foi utilizado aqui considerando que podem 
-    % haver problemas 2-D e 3-D também.
+    % fluxo fracional no volume como balanço do que entra menos o que sai
+    % pelas faces. Esse artificio, todavia é mais útil em casos 3D 
     % Esse artificio também é usado pra calcular o delta de
-    % saturação (dSw_vols) no volume. 
+    % saturação (dSw) no volume. 
     cph = 1;
 
     lines = cat(1,repmat(cph,length(conec(:,1)),1), repmat(cph, length(conec(:,2)),1));
     cols = cat(1,conec(:,1),conec(:,2));
     data = cat(1,-fw_face, fw_face);
     dfw_vols = sparse(lines,cols,data);
+    
+    lines = cat(1,repmat(cph,length(conec(:,1)),1), repmat(cph, length(conec(:,2)),1));
+    cols = cat(1,conec(:,1),conec(:,2));
+    data = cat(1,Sw_face, -Sw_face);
+    dSw_vols = sparse(lines,cols,data);
+    
+    dfwdSw = dfw_vols./dSw_vols;
+    dfwdSw(dSw_vols==0)=0;
 end

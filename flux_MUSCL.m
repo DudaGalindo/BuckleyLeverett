@@ -1,4 +1,4 @@
-function [dfwdSw, dfw_vols] = flux_MUSCL(M, Sw, mi_w, mi_o, Sor, Swc, n_o, n_w, solver)
+function [dfw_vols] = flux_MUSCL(M, Sw, mi_w, mi_o, Sor, Swc, n_o, n_w, solver)
 %% Obtenção dos gradientes 
 conec = M.faces_conec;
 dSw_face = Sw(conec(:,2)) -Sw(conec(:,1));
@@ -78,27 +78,33 @@ fwm_face_minus = lambm_w_face_minus./(lambm_o_face_minus + lambm_w_face_minus);
 dfw_dSw_face(:,3) = (fwm_face_plus - fwm_face_minus)./(Swm_face_plus - Swm_face_minus);
 
 alpha = max(abs(dfw_dSw_face),[],2);
-alpha_HG = (fw_face(:,2) - fw_face(:,1))./(Sw_face(:,2) - Sw_face(:,1));
-alpha_HG((Sw_face(:,2) - Sw_face(:,1)==0)) = 0;
 %alpha_HG(abs(Sw_face(:,2) - Sw_face(:,1))<1e-2)=max(abs(dfw_dSw_face(abs(Sw_face(:,2) - Sw_face(:,1))<1e-2)),[],2);
 %% Cálculo do Fluxo por LLF:
 if strcmp(solver, 'LLF')
     fw_face = 1/2*(sum(fw_face,2) - alpha.*(Sw_face(:,2) - Sw_face(:,1)));
 end
+
+%% Cálculo do fluxo por Roe
 if strcmp(solver, 'Roe')
-    A = abs(alpha_HG);
+    % cálculo do alpha por Rankine-Hugoniot = A (matriz de Roe).
+    alpha_RH = (fw_face(:,2) - fw_face(:,1))./(Sw_face(:,2) - Sw_face(:,1));
+    alpha_RH((Sw_face(:,2) - Sw_face(:,1)==0)) = 0;
+    A = abs(alpha_RH);
     fw_face = 1/2*(sum(fw_face,2) - A.*(Sw_face(:,2) - Sw_face(:,1)));
 end
-%% Cálculo do Fluxo por Roe:
 
+% Abaixo é mostrado um artificio usando matriz esparsa pra calcular o
+% fluxo fracional no volume (dfw_vols) como o balanço do que entra 
+% menos o que sai pelas faces. 
+% Esse artificio foi utilizado aqui considerando que podem 
+% haver problemas 2-D e 3-D também.
+% Esse artificio também é usado pra calcular o delta de
+% saturação (dSw_vols) no volume. 
 cph = 1;
 lines = cat(1,repmat(cph,length(conec(:,1)),1), repmat(cph, length(conec(:,2)),1));
 cols = cat(1,conec(:,1),conec(:,2));
 data = cat(1,-fw_face, fw_face);
 dfw_vols = sparse(lines,cols,data);
 
-dfwdSw = dfw_vols./dSw_vols;
-dfwdSw(dSw_vols==0)=0;
-dfw_vols = dfwdSw.*dSw_vols;
 
 end

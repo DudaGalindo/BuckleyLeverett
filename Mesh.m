@@ -1,3 +1,5 @@
+% Arquivo criado para gerar a malha (gerada manualmente) - só funciona para
+% malhas 1-D.
 classdef Mesh
     properties
         n_el 

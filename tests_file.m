@@ -1,25 +1,24 @@
+% Arquivo criado para fazer a simulação de todos os casos e plotar os
+% resultados.
+
 %% Input data file 
 L = 1.0; % domain length [m]
 A = 1.0; % area of cross-section [m^2]
-phi = 1;
-theta = pi*0.0; % angle: x-direction vs horizontal[rad]
-% 1.2 fluid properties
+phi = 1; % porosity
 mi_o = 1.0e-3; % oil phase viscosity [Pa*s]
 mi_w = 1.0e-3; % water phase viscosity [Pa*s]
 
-% 1.3 relative permeability parameters
+% Relative permeability parameters
 Sor = 0.1; % residual oil saturation
 Swc = 0.1; % connate water saturation
 n_o = 2.00; % exponent of oil phase
 n_w = 2.00; % exponent of water phase
 
-% 1.4 other initial parameters
-
+% Other initial parameters
 t0 = 0.; % initial calculation time [s]
-t_final = .2; % final calculation time [s]
+t_final = 0.2; % final calculation time [s]
 
 %% Run Test - mesh with 8 elements
-
 M = Mesh;
 M.n_el = 8;
 M.L = L;
@@ -159,7 +158,8 @@ solver = 'Roe';
 [Sw1024_MUSCL_Roe] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_final, solver);
 
 %% Analytical Solution using Welge's Approach
-[index, dfw, Sw, Xsw, Swf, nts] = Welge_Solution();
+k = 1; % permeabilidade absoluta
+[index, dfw, Sw, Xsw, Swf, nts] = Welge_Solution(L, A, phi, k, mi_o, mi_w, Sor, Swc, n_o, n_w); %chamando funcao
 t = linspace(t0, t_final, nts);
 dfwt = dfw(end:-1:index); % inverted sequence of dfw
 Swt = Sw(end:-1:index); % inverted sequence of Sw
@@ -171,6 +171,8 @@ for i = 1:(nsw-index+1)
 end
 
  %% Plotting Area
+ 
+ % Plot results for FOUM only
  fig1 = figure(1);
  set(fig1, 'color', 'w')
  hold on
@@ -197,6 +199,7 @@ end
      'Welge Analytical Solution')
  grid minor
 
+ % Plot results for MUSCL-LLF only
 fig2 = figure(2);
  set(fig2, 'color', 'w')
  hold on
@@ -223,6 +226,7 @@ fig2 = figure(2);
      'Welge Analytical Solution')
  grid minor
  
+ % Plot results for MUSCL-Roe only
  fig3 = figure(3);
  set(fig3, 'color', 'w')
  hold on
@@ -249,6 +253,7 @@ fig2 = figure(2);
      'Welge Analytical Solution')
  grid minor
  
+ % Plot results for comparison between methods
  fig4 = figure(4);
  set(fig4, 'color', 'w')
  hold on

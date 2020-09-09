@@ -1,26 +1,16 @@
 %% Problem description
 % Analytical solution of Buckley–Leverett equation using Welge method
 % Brooks–Corey type relative permeability curves are used
-function [index, dfw, Sw, Xsw, Swf, nts] = Welge_Solution()
+function [index, dfw, Sw, Xsw, Swf, nts] = Welge_Solution(L, A, phi, k, muo, muw, Sor, Swc, no, nw)
 %% 1 Parameters initialization
 % 1.1 rock properties
-L = 1.0; % domain length [m]
-A = 1; % area of cross-section [m^2]
-phi = 1.; % porosity
-k = 1.; % absolute permeability [m^2]
 theta = pi*0.0; % angle: x-direction vs horizontal[rad]
 % 1.2 fluid properties
-muo = 1.0e-3; % oil phase viscosity [Pa*s]
-muw = 1.0e-3; % water phase viscosity [Pa*s]
 rho_o = 1.e3; % oil density [kg/m^3]
 rho_w = 1.0e3; % water density [kg/m^3]
 dlt_rho = rho_w-rho_o; % density difference [kg/m^3]
 
 % 1.3 relative permeability parameters
-Sor = 0.1; % residual oil saturation
-Swc = 0.1; % connate water saturation
-no = 2.00; % exponent of oil phase
-nw = 2.00; % exponent of water phase
 kro_max = 1.; % maximum permeability of oil phase
 krw_max = 1.; % maximum permeability of water phase
 
