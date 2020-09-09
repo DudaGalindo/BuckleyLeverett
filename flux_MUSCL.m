@@ -1,11 +1,18 @@
+%% Cálculo do fluxo na face por uma aproximação do tipo MUSCL de segunda ordem
+
 function [dfw_vols] = flux_MUSCL(M, Sw, mi_w, mi_o, Sor, Swc, n_o, n_w, solver)
+
 %% Obtenção dos gradientes 
 conec = M.faces_conec;
 dSw_face = Sw(conec(:,2)) -Sw(conec(:,1));
 dSw_vols(M.contour_vols_ID) = 0;
+
 for i=2:M.n_el-1
+    % Obtenção dos gradientes no volume (passo inicial), vide relatório:
     dSw_vols(i) = Sw(i+1) - Sw(i-1); 
 end
+
+% Obtenção dos gradientes vizinhos, à montante e à jusante da face:
 dSw_face_neig = zeros(length(conec(:,1)),2);
 dSw_face_neig(:,1) = dSw_vols(conec(:,1)) - dSw_face;
 dSw_face_neig(:,2) = dSw_vols(conec(:,2)) - dSw_face;
@@ -20,7 +27,9 @@ r(dSw_face_neig==0)=0;
 %% Cálculo da função limitadora (usando aqui Van Leer):
 phi = (r + abs(r))./(r + 1);
 phi(:,2) = -phi(:,2);
-%phi = (r.^2 + r)./(r.^2 + 1);
+
+% Abaixo é a função limitadora de Van Albada
+%phi = (r.^2 + r)./(r.^2 + 1); 
 %phi(:,2) = -phi(:,2);
 phi(r==-1)=0;
 
@@ -38,6 +47,10 @@ end
 lamb_w_face = krw_face/mi_w;
 lamb_o_face = kro_face/mi_o;
 fw_face = lamb_w_face./(lamb_o_face + lamb_w_face);
+
+%% Cálculo de dfw_dSw na face:
+% derivada calculada computacionalmente com delta = 0.001, pelo método
+% central.
 
 dfw_dSw_face = zeros(length(conec(:,2)),3);
 delta = 0.001;

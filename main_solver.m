@@ -10,7 +10,7 @@ function [Sw] = main_solver(M, phi, mi_o, mi_w, Sw, Swc, Sor, n_o, n_w, t, t_fin
         % Abaixo obtemos dfw_vols - o fluxo resultante no volume, de acordo
         %com o fluxo calculado nas faces que compõem o seu contorno.
         if strcmp(solver,'FOUM')
-            [dfw_vols] = flux_FOUM(M, fw, Sw); 
+            [dfw_vols] = flux_FOUM(M, fw); 
         else
              [dfw_vols] = flux_MUSCL(M, Sw, mi_w, mi_o, Sor, Swc, n_o, n_w, solver);
         end
